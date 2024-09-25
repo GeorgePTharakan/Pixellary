@@ -219,3 +219,41 @@ label:hover {
     
 }
 
+/* Preview container styling */
+.preview-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .preview-container img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+  }
+  
+  /* Styling for the discard and upload buttons */
+  .preview-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .preview-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #discardButton {
+    background-color: #ff4d4d;
+    color: white;
+  }
+  
+  #uploadButton {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+

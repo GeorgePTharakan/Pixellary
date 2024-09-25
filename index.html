@@ -21,8 +21,21 @@
 
       <p class="upload-container">
         <input type="file" id="fileUpload" name="fileUpload" />
-        <label for="fileUpload">Upload!</label>
+        <label for="fileUpload">Select Image</label>
       </p>
+
+      <!-- Preview section for the selected image -->
+      <div
+        id="previewContainer"
+        class="preview-container"
+        style="display: none"
+      >
+        <img id="previewImage" alt="Selected Image Preview" />
+        <div class="preview-actions">
+          <button id="discardButton">Discard</button>
+          <button id="uploadButton">Upload</button>
+        </div>
+      </div>
 
       <!-- Gallery section -->
       <section class="gallery">

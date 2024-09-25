@@ -48,45 +48,79 @@ const firebaseConfig = {
   // Call the function to load images when the page loads
   loadGalleryImages();
   
-  // Handle file uploads
-  const fileInput = document.getElementById("fileUpload");
+ // Handle file selection
+const fileInput = document.getElementById("fileUpload");
+const previewContainer = document.getElementById("previewContainer");
+const previewImage = document.getElementById("previewImage");
+const discardButton = document.getElementById("discardButton");
+const uploadButton = document.getElementById("uploadButton");
+
+let selectedFile = null;
+
+fileInput.addEventListener("change", (e) => {
+  selectedFile = e.target.files[0];
   
-  fileInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    const storageRef = storage.ref().child(`images/${file.name}`);
+  if (selectedFile) {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      previewImage.src = event.target.result;
+      previewContainer.style.display = "block";
+    };
+    reader.readAsDataURL(selectedFile);
+  }
+});
+
+// Handle discard action
+discardButton.addEventListener("click", () => {
+  selectedFile = null;
+  previewImage.src = "";
+  previewContainer.style.display = "none";
+  fileInput.value = "";  // Clear the file input
+});
+
+// Handle file upload
+uploadButton.addEventListener("click", () => {
+  if (!selectedFile) return;
   
-    storageRef.put(file).then((snapshot) => {
-      console.log("Uploaded a file!");
+  const storageRef = storage.ref().child(`images/${selectedFile.name}`);
   
-      // Get the download URL
-      storageRef.getDownloadURL().then((downloadURL) => {
-        console.log("File available at", downloadURL);
-  
-        // Store image metadata in Firestore
-        db.collection("images").add({
-          name: file.name,
-          url: downloadURL,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Optional: add a timestamp
-        }).then(() => {
-          console.log("Image metadata stored in Firestore");
-  
-          // Dynamically add the image to the gallery
-          const imgElement = document.createElement("img");
-          imgElement.src = downloadURL;
-          imgElement.alt = file.name;
-          imgElement.addEventListener("click", function () {
-            modal.style.display = "flex";
-            modalImage.src = this.src;
-          });
-  
-          // Append the image to the gallery
-          gallery.appendChild(imgElement);
-        }).catch((error) => {
-          console.error("Error adding document: ", error);
+  storageRef.put(selectedFile).then((snapshot) => {
+    console.log("Uploaded a file!");
+    
+    storageRef.getDownloadURL().then((downloadURL) => {
+      console.log("File available at", downloadURL);
+      
+      // Store image metadata in Firestore
+      db.collection("images").add({
+        name: selectedFile.name,
+        url: downloadURL,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      }).then(() => {
+        console.log("Image metadata stored in Firestore");
+        
+        // Dynamically add the image to the gallery
+        const imgElement = document.createElement("img");
+        imgElement.src = downloadURL;
+        imgElement.alt = selectedFile.name;
+        imgElement.addEventListener("click", function () {
+          modal.style.display = "flex";
+          modalImage.src = this.src;
         });
+        
+        gallery.appendChild(imgElement);
+        
+        // Reset the preview and file input
+        selectedFile = null;
+        previewImage.src = "";
+        previewContainer.style.display = "none";
+        fileInput.value = "";
+      }).catch((error) => {
+        console.error("Error adding document: ", error);
       });
     });
   });
+});
+
   
   // Modal functionality remains the same
   const modal = document.getElementById("myModal");
