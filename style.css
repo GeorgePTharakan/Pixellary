@@ -10,7 +10,7 @@ body {
 }
 .container {
     background-color: white;
-    width: 80%;
+    width: 75%;
     margin: 0 auto;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -160,7 +160,7 @@ display: none;
 .modal {
     display: none; /* Hidden by default */
     position: fixed;
-    z-index: 1000;
+    z-index: 0;
     left: 0;
     top: 0;
     width: 100%;
@@ -199,26 +199,23 @@ display: none;
 }
 
 label {
-    display: inline-block; /* Makes the label act like a block element while retaining inline properties */
-    margin-top: 30px;
-    color: #45a049;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    border-color: #45a049;
-    border-style: solid;
-    transform: none;
+  display: inline-block;
+  margin-top: 30px;
+  color: #45a049;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid #45a049;
+  background-color: transparent;
+  transition: all 0.3s ease;
 }
 
 label:hover {
-    background-color: #45a049;
-    color: #ffffff;
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-    transform: scale(1.1) translateZ(0px) ; /* Reduced the scale for a more subtle effect */
-    
+  background-color: #45a049;
+  color: #ffffff!important;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  transform: scale(1.1);
 }
-
 /* Preview container styling */
 .preview-container {
     text-align: center;
@@ -257,3 +254,18 @@ label:hover {
   }
   
 
+/* Progress Bar Styling */
+#progressContainer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+progress {
+  width: 80%;
+  height: 20px;
+}
+
+#progressText {
+  margin-top: 10px;
+  font-size: 16px;
+}
