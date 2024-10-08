@@ -1,52 +1,98 @@
-//configuration
+// Load environment variables from .env file
+// require('dotenv').config();
+
+// Firebase configuration and initialization
 const firebaseConfig = {
-    apiKey: "AIzaSyDbiMu3iAcrWaDDlxqzuIWipkufQucEBoA",
-    authDomain: "pixellary-8da71.firebaseapp.com",
-    databaseURL: "https://pixellary-8da71-default-rtdb.firebaseio.com",
-    projectId: "pixellary-8da71",
-    storageBucket: "pixellary-8da71.appspot.com",
-    messagingSenderId: "730287076943",
-    appId: "1:730287076943:web:cf236a388445ed14415c3a",
-    measurementId: "G-ZKL4VZMMS7",
-  };
-  
-  
-  firebase.initializeApp(firebaseConfig);// Initializing 
-  const storage = firebase.storage();
-  const db = firebase.firestore();
-  
+  apiKey: "AIzaSyDbiMu3iAcrWaDDlxqzuIWipkufQucEBoA",
+  authDomain: "pixellary-8da71.firebaseapp.com",
+  databaseURL: "https://pixellary-8da71-default-rtdb.firebaseio.com",
+  projectId: "pixellary-8da71",
+  storageBucket: "pixellary-8da71.appspot.com",
+  messagingSenderId: "730287076943",
+  appId: "1:730287076943:web:cf236a388445ed14415c3a",
+  measurementId: "G-ZKL4VZMMS7",
+};
+
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const storage = firebase.storage();
+const db = firebase.firestore();
+
  
   const gallery = document.querySelector(".gallery");
   
   // display gallery
-  function loadGalleryImages() {
-    db.collection("images")
-      .orderBy("timestamp", "desc")
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          const imgData = doc.data();
-          const imgElement = document.createElement("img");
-          imgElement.src = imgData.url;
-          imgElement.alt = imgData.name;
-          
-          
-          imgElement.addEventListener("click", function () {
-            modal.style.display = "flex";
-            modalImage.src = this.src;
-          });
-          
-          
-          gallery.appendChild(imgElement);
+ // Function to fetch images from Firestore and display them
+function loadGalleryImages() {
+  db.collection("images")
+    .orderBy("timestamp", "desc")
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const imgData = doc.data();
+        const imgElement = document.createElement("img");
+        
+        // Use data-src for lazy loading
+        imgElement.setAttribute("data-src", imgData.url);
+        imgElement.alt = imgData.name;
+        imgElement.classList.add("lazy"); // Add a class for potential styling
+
+        // Modal functionality for each image
+        imgElement.addEventListener("click", function () {
+          modal.style.display = "flex";
+          modalImage.src = this.src; // Use src here for the modal
         });
-      })
-      .catch((error) => {
-        console.error("Error loading images: ", error);
+
+        // Append the image to the gallery
+        gallery.appendChild(imgElement);
       });
+      
+      // Set up lazy loading
+      lazyLoadImages();
+    })
+    .catch((error) => {
+      console.error("Error loading images: ", error);
+    });
+}
+
+// Function to lazy load images
+function lazyLoadImages() {
+  const lazyImages = document.querySelectorAll("img.lazy");
+  const config = {
+    root: null, // Use the viewport as the root
+    rootMargin: "0px",
+    threshold: 0.1 // Trigger when 10% of the image is visible
+  };
+
+  let observer;
+
+  if ('IntersectionObserver' in window) {
+    observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.getAttribute('data-src'); // Load the image
+          img.classList.remove('lazy'); // Remove lazy class
+          observer.unobserve(img); // Stop observing this image
+        }
+      });
+    }, config);
+
+    lazyImages.forEach(image => {
+      observer.observe(image); // Start observing each image
+    });
+  } else {
+    // Fallback for browsers that don't support Intersection Observer
+    lazyImages.forEach(image => {
+      image.src = image.getAttribute('data-src');
+    });
   }
-  
-  
-  loadGalleryImages();
+}
+
+// Call the function to load images when the page loads
+loadGalleryImages();
+
   
  //selecting file
 const fileInput = document.getElementById("fileUpload");

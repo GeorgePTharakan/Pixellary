@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pixellary</title>
     <link href="./style.css" rel="stylesheet" />
-    <link rel="icon" href="src/img12.jpg" type="image/png" />
+    <link rel="icon" href="../static/img12.jpg" type="image/png" />
 
     <!-- Add Firebase SDKs from CDN -->
     <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-app-compat.js"></script>
@@ -43,13 +43,13 @@
         </div>
       </div>
       <!-- Progress bar container -->
-      <div id="progressContainer" style="display: none">
-        <progress id="uploadProgress" value="0" max="100"></progress>
-        <p id="progressText">0%</p>
+      <div class="gallery-container">
+        <div id="progressContainer" style="display: none">
+          <progress id="uploadProgress" value="0" max="100"></progress>
+          <span id="progressText">0%</span>
+        </div>
+        <div class="gallery"></div>
       </div>
-
-      <!-- Gallery section -->
-      <section class="gallery"></section>
 
       <div id="myModal" class="modal">
         <span class="close">&times;</span>

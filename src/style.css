@@ -84,6 +84,20 @@ a:active {
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); 
     cursor: pointer;
 } */
+.gallery-container {
+  position: relative; /* Set the container as the reference for absolute positioning */
+}
+
+#progressContainer {
+  position: absolute; /* Absolute positioning */
+  top: -75px; /* Position it at the top of the container */
+  left: 0; /* Align it to the left */
+  right: 0; /* Make it stretch to the right */
+  z-index: 1; /* Bring it above the gallery */
+  display: none; /* Initially hidden */
+}
+
+
 
 
 .gallery {
