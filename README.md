@@ -14,10 +14,10 @@ Pixellary is a simple web-based image gallery that lets users upload images, vie
 - **Lazy loading** to improve performance while browsing the gallery.
 - **Clickable modal** to enlarge and view images in detail.
 
-# Upload Example
+## Upload Example
 
 ![Upload Example](./static/Screenshot%202024-10-14%20112112.png)
 
-# Gallery Preview
+## Gallery Preview
 
 ![Gallery Preview](./static/Screenshot%202024-10-14%20112327.png)
